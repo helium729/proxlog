@@ -10,6 +10,11 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <unistd.h>
+#include <netinet/tcp.h>
+
+#include "packout.h"
+#include "packin.h"
+#include "proc.h"
 
 namespace proxlog
 {

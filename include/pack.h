@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <sstream>
 
 namespace proxlog
 {
@@ -10,16 +11,11 @@ namespace proxlog
     {
     public:
         Pack();
-        Pack(std::string data);
-        ~Pack();
+        Pack(std::string raw_data);
+        virtual ~Pack();
 
-        std::string getData();
-    private:
-        std::string req_method;
-        std::string req_path;
-        std::string req_version;
-        std::map<std::string, std::string> req_headers;
-        std::string req_body;        
+        virtual std::string getRawData();
+    private:      
     };
 }
 

@@ -1,11 +1,11 @@
 #include "proc.h"
 
-proxlog::Pack proxlog::procIn(Pack in)
+proxlog::PackIn proxlog::procIn(PackIn in)
 {
     return in;
 }
 
-proxlog::Pack proxlog::procOut(Pack in)
+proxlog::PackOut proxlog::procOut(PackOut in)
 {
     return in;
 }

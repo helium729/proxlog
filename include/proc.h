@@ -2,11 +2,13 @@
 #define PROXLOG_PROC_H
 
 #include "pack.h"
+#include "packin.h"
+#include "packout.h"
 
 namespace proxlog
 {
-    Pack procIn(Pack in);
-    Pack procOut(Pack in);
+    PackIn procIn(PackIn in);
+    PackOut procOut(PackOut in);
 }
 
 

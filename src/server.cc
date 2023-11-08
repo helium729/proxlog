@@ -16,6 +16,23 @@ proxlog::Server::Server(int port)
         exit(EXIT_FAILURE);
     }
 
+    // Set socket options for TCP connections
+    struct timeval timeout;
+    timeout.tv_sec = 100;
+    timeout.tv_usec = 0;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+    if (setsockopt(server_fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+    if (setsockopt(server_fd, IPPROTO_TCP, TCP_NODELAY, (char *)&opt, sizeof(opt)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+
     // Bind the socket to a port
     struct sockaddr_in address;
     address.sin_family = AF_INET;
@@ -51,12 +68,24 @@ void proxlog::Server::handle_connection(int client_fd) {
     // get request
     char buffer[65536] = {0};
     int valread = read(client_fd, buffer, 65536);
+    printf("%s\n", buffer);
+
+    // parse request
+    std::string raw_data = buffer;
+    proxlog::PackOut pack_out(raw_data);
+
+    proxlog::PackOut fwd_pack_out = proxlog::procOut(pack_out);
     
     
 
-    // send a response
-    char *msg = "Hello, World!";
-    send(client_fd, msg, strlen(msg), 0);
+    // send a http response
+    // const char* msg =
+    // "HTTP/1.1 200 OK\n"
+    // "Content-Type: text/html\n"
+    // "Content-Length: 12\n"
+    // "\n"
+    // "Hello world!";
+    // send(client_fd, msg, strlen(msg), 0);
 
 }
 
