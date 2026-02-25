@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake g++ make
+        
+    - name: Create build directory
+      run: mkdir -p build
+      
+    - name: Configure CMake
+      run: |
+        cd build
+        cmake ..
+        
+    - name: Build
+      run: |
+        cd build
+        make
+        
+    - name: Run tests
+      run: |
+        cd build
+        ./test_suite
+        
+    - name: Verify executables
+      run: |
+        ls -lh build/proxlog
+        ls -lh build/test_suite
